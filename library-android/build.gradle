@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$ANDROIDGRADLE_PLUGIN_VERSION"
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = [
+                        'src/main/java',
+                        '../library/src/main/java'
+                ]
+            }
+        }
+    }
+}
+
+dependencies {
+    compile "com.android.support:support-annotations:$SUPPORT_ANNOTATIONS_VERSION"
+}
+
+publish {
+    userOrg = USER
+    groupId = GROUP_NAME
+    artifactId = ARTIFACT_ANDROID
+    version = VERSION_NAME
+    description = DESCRIPTION
+    website = WEBSITE
+    licences = project.ext.licences
+    bintrayUser = project.ext.bintrayUser
+    bintrayKey = project.ext.bintrayKey
+    dryRun = false
+}

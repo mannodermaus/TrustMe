@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.novoda:bintray-release:$BINTRAYRELEASE_PLUGIN_VERSION"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    ext {
+        bintrayUser = properties.getProperty("bintray.user")
+        bintrayKey = properties.getProperty("bintray.apikey")
+        licences = ['Apache-2.0']
+    }
+}
