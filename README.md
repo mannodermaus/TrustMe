@@ -18,7 +18,7 @@ Add **one of the two** library dependencies based on your use case:
 ```groovy
 dependencies {
 	compile "com.github.aurae.trustme:trustme-java:0.2.0"
-	compile "com.github.aurae.trustme:trustme-android:0.2.0"
+	compile "com.github.aurae.trustme:trustme-android:0.2.0@aar"
 }
 ```
 
