@@ -16,7 +16,7 @@ import javax.net.ssl.TrustManagerFactory
  * This can be fed into HttpsURLConnection,
  * as well as networking libraries such as OkHttp.
  */
-class TrustMe {
+class TrustMe private constructor() {
 
   companion object {
     /**

@@ -11,7 +11,7 @@ import javax.net.ssl.SSLSocketFactory
  * This can be fed into HttpsURLConnection,
  * as well as networking libraries such as OkHttp.
  */
-class TrustMeAndroid {
+class TrustMeAndroid private constructor() {
 
   companion object {
     /**
