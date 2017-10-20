@@ -4,14 +4,31 @@ buildscript {
     google()
   }
   dependencies {
-    classpath "com.novoda:bintray-release:$BINTRAY_RELEASE_PLUGIN_VERSION"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
     classpath "com.android.tools.build:gradle:$ANDROID_GRADLE_PLUGIN_VERSION"
+    classpath "digital.wup:android-maven-publish:$ANDROID_MAVEN_PLUGIN_VERSION"
+    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$BINTRAY_PLUGIN_VERSION"
+    classpath "com.github.dcendents:android-maven-gradle-plugin:$DCENDENTS_MAVEN_PLUGIN_VERSION"
   }
 }
 
-final Properties properties = new Properties()
-rootProject.file("local.properties").withReader { properties.load(it) }
+// Populate deployment credentials in an environment-aware fashion.
+//
+// * Local development:
+//      Stored in local.properties file on the machine
+// * CI Server:
+//      Stored in environment variables before launch
+Properties properties = new Properties()
+
+def credentialsFile = new File(project.rootDir, "local.properties")
+if (credentialsFile.exists()) {
+  credentialsFile.withReader { properties.load(it) }
+}
+
+def bintrayUser = properties.getProperty("BINTRAY_USER", System.getenv("bintrayUser"))
+def bintrayKey = properties.getProperty("BINTRAY_KEY", System.getenv("bintrayKey"))
+def sonatypeUser = properties.getProperty("SONATYPE_USER", System.getenv("sonatypeUser"))
+def sonatypePass = properties.getProperty("SONATYPE_PASS", System.getenv("sonatypePass"))
 
 allprojects {
   repositories {
@@ -19,9 +36,9 @@ allprojects {
     jcenter()
   }
 
-  ext {
-    bintrayUser = properties.getProperty("bintray.user")
-    bintrayKey = properties.getProperty("bintray.apikey")
-    licences = ["Apache-2.0"]
-  }
+  // Store deployment credentials
+  ext.bintrayUser = bintrayUser
+  ext.bintrayKey = bintrayKey
+  ext.sonatypeUser = sonatypeUser
+  ext.sonatypePass = sonatypePass
 }

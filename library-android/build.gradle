@@ -1,6 +1,5 @@
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-apply plugin: "com.novoda.bintray-release"
 
 android {
   compileSdkVersion COMPILE_SDK_VERSION
@@ -23,15 +22,9 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$KOTLIN_VERSION"
 }
 
-publish {
-  userOrg = USER
-  groupId = GROUP_NAME
-  artifactId = ARTIFACT_ANDROID
-  version = VERSION_NAME
-  desc = DESCRIPTION
-  website = WEBSITE
-  licences = project.ext.licences
-  bintrayUser = project.ext.bintrayUser
-  bintrayKey = project.ext.bintrayKey
-  dryRun = false
-}
+
+// Deployment Setup
+ext.artifact = ARTIFACT_ANDROID
+ext.targetPlatform = "android"
+
+apply from: "$rootDir/scripts/deploy.gradle"
