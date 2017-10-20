@@ -1,5 +1,7 @@
 # TrustMe
 
+[![Travis Build Status](https://travis-ci.org/mannodermaus/TrustMe.svg)][travisci]
+
 TrustMe is a lightweight library that helps you with creating `SSLSocketFactory` instances
 for your custom CA, so that your restrictive network clients can authenticate SSL requests
 against a self-signed server.
@@ -65,3 +67,6 @@ val sslFactory = TrustMeAndroid.resource(context, myCa)
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
+
+ [travisci]: https://travis-ci.org/mannodermaus/TrustMe
+ 
