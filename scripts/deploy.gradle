@@ -94,14 +94,17 @@ publishing {
   publications {
     library(MavenPublication) {
       if (targetPlatform == "android") {
-        // Supplied by android-maven-publish
+        // Supplied by android-maven-publish;
+        // sources & javadoc artifacts provided by android-maven-publish
         from components.android
       } else {
-        // Supplied by maven-publish
+        // Supplied by maven-publish;
+        // attach artifacts manually
         from components.java
+        
+        artifact sourcesJar
+        artifact javadocJar
       }
-      artifact sourcesJar
-      artifact javadocJar
       groupId GROUP_ID
       artifactId deployedArtifactId
       version VERSION_NAME
