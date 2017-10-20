@@ -1,22 +1,44 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.novoda:bintray-release:$BINTRAYRELEASE_PLUGIN_VERSION"
-    }
+  repositories {
+    jcenter()
+    google()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+    classpath "com.android.tools.build:gradle:$ANDROID_GRADLE_PLUGIN_VERSION"
+    classpath "digital.wup:android-maven-publish:$ANDROID_MAVEN_PLUGIN_VERSION"
+    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$BINTRAY_PLUGIN_VERSION"
+    classpath "com.github.dcendents:android-maven-gradle-plugin:$DCENDENTS_MAVEN_PLUGIN_VERSION"
+  }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
+// Populate deployment credentials in an environment-aware fashion.
+//
+// * Local development:
+//      Stored in local.properties file on the machine
+// * CI Server:
+//      Stored in environment variables before launch
+Properties properties = new Properties()
 
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    ext {
-        bintrayUser = properties.getProperty("bintray.user")
-        bintrayKey = properties.getProperty("bintray.apikey")
-        licences = ['Apache-2.0']
-    }
+def credentialsFile = new File(project.rootDir, "local.properties")
+if (credentialsFile.exists()) {
+  credentialsFile.withReader { properties.load(it) }
+}
+
+def bintrayUser = properties.getProperty("BINTRAY_USER", System.getenv("bintrayUser"))
+def bintrayKey = properties.getProperty("BINTRAY_KEY", System.getenv("bintrayKey"))
+def sonatypeUser = properties.getProperty("SONATYPE_USER", System.getenv("sonatypeUser"))
+def sonatypePass = properties.getProperty("SONATYPE_PASS", System.getenv("sonatypePass"))
+
+allprojects {
+  repositories {
+    google()
+    jcenter()
+  }
+
+  // Store deployment credentials
+  ext.bintrayUser = bintrayUser
+  ext.bintrayKey = bintrayKey
+  ext.sonatypeUser = sonatypeUser
+  ext.sonatypePass = sonatypePass
 }
