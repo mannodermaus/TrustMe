@@ -1,65 +1,57 @@
 # TrustMe
-TrustMe is a lightweight library that helps you with creating `SSLSocketFactory` instances for your custom CA, so that your restrictive network clients can authenticate SSL requests against a self-signed server.
+TrustMe is a lightweight library that helps you with creating `SSLSocketFactory` instances
+for your custom CA, so that your restrictive network clients can authenticate SSL requests
+against a self-signed server.
 
 ## Download
-
-No jcenter yet; sorry!
-
-```groovy
-buildscript {
-	repositories {
-        maven { url "https://dl.bintray.com/aurae/maven" }
-    }
-}
-```
 
 Add **one of the two** library dependencies based on your use case:
 
 ```groovy
 dependencies {
-	compile "com.github.aurae.trustme:trustme-java:0.2.0"
-	compile "com.github.aurae.trustme:trustme-android:0.2.0@aar"
+	compile "de.mannodermaus.trustme:trustme-jre:1.0.0"
+	compile "de.mannodermaus.trustme:trustme-android:1.0.0"
 }
 ```
 
 ## Usage
 
-### Java
+### JRE
 
 TrustMe provides the interface to custom `SSLSocketFactory` instances:
 
-```java
-// Grab your CA file handle
-File myCaFile = new File("certs/selfsigned/my_ca.cer");
-
-// Create the SSLSocketFactory
-SSLSocketFactory sslFactory = TrustMe.newSSLSocketFactory(myCaFile);
+```kotlin
+// From a File
+val myCaFile = File("certs/selfsigned/my_ca.cer")
+val sslFactory = TrustMe.file(myCaFile)
 ```
 
-```java
-// Get the CA's content bytes (from a URL, for instance)
-byte[] myCaBytes = ...;
+```kotlin
+// From a ByteArray
+val myCaBytes = …
+val sslFactory = TrustMe.bytes(myCaBytes)
+```
 
-// Create the SSLSocketFactory
-SSLSocketFactory sslFactory = TrustMe.newSSLSocketFactory(myCaBytes);
+```kotlin
+// From any InputStream (will propagate errors during creation)
+val myCaInputStreeam = …
+val sslFactory = TrustMe.inputStream(myCaInputStream)
 ```
 
 ### Android
 
-`trustme-android` provides an additional method of retrieving an SSLSocketFactory, which is using a raw resource file:
+`trustme-android` provides an additional method of retrieving an SSLSocketFactory,
+which is using a raw resource file:
 
-```java
-// Get the CA's raw resource ID and a context
-@RawRes int myCa = R.raw.my_ca;
-Context context = getActivity();
-
-// Create the SSLSocketFactory
-SSLSocketFactory sslFactory = TrustMeAndroid.newSSLSocketFactory(context, myCa);
+```kotlin
+@RawRes val myCa = R.raw.my_ca
+val context = getActivity()
+val sslFactory = TrustMeAndroid.resource(context, myCa)
 ```
 
 ## License
 
-	Copyright 2016 Marcel Schnelle
+	Copyright 2017 Marcel Schnelle
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
